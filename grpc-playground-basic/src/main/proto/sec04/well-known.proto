@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package sec04.common;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "com.example.sec04";
+option java_multiple_files = true;
+
+message Sample{
+  google.protobuf.Int32Value age = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
