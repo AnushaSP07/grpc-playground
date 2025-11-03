@@ -1,0 +1,1 @@
+blocking stub cannot be used in bidrectual streaming RPCs. Instead, use the asynchronous stub.

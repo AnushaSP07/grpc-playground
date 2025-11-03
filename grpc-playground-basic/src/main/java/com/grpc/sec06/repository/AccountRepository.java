@@ -1,10 +1,10 @@
 package com.grpc.sec06.repository;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class AccountRepository {
 
@@ -15,4 +15,17 @@ public class AccountRepository {
     public static Integer getBalance(int accountNumber) {
         return db.get(accountNumber);
     }
+
+    public static Map<Integer, Integer> getAllAccounts(){
+        return Collections.unmodifiableMap(db);
+    }
+
+    public static void deductAmount(int accountNumber, int amount){
+        db.computeIfPresent(accountNumber, (k, v) -> v - amount);
+    }
+
+    public static void addAmount(int accountNumber, int amount){
+        db.computeIfPresent(accountNumber, (k, v) -> v + amount);
+    }
+
 }
