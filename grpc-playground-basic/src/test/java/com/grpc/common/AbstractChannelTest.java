@@ -1,6 +1,5 @@
 package com.grpc.common;
 
-import com.google.common.util.concurrent.TimeLimiter;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.junit.jupiter.api.AfterAll;
@@ -12,18 +11,19 @@ import java.util.concurrent.TimeUnit;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractChannelTest {
 
-    private ManagedChannel channel;
+    protected ManagedChannel channel;
 
     @BeforeAll
-    public void setUpChannel(){
-        ManagedChannelBuilder.forAddress("localhost", 6565)
-                .usePlaintext()
-                .build();
+    public void setupChannel() {
+        this.channel = ManagedChannelBuilder.forAddress("localhost", 6565)
+                                            .usePlaintext()
+                                            .build();
     }
 
     @AfterAll
-    public void shutdownChannel() throws InterruptedException {
+    public void stopChannel() throws InterruptedException {
         this.channel.shutdownNow()
-                .awaitTermination(5, TimeUnit.SECONDS);
+                    .awaitTermination(5, TimeUnit.SECONDS);
     }
+
 }

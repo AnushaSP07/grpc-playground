@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package sec07;
+
+option java_package ="com.grpc.models.sec07";
+option java_multiple_files = true;
+
+
+/*
+server emits 1-100 very fast
+
+We want to control the rate in which server emits based on the clients processing speed vice versa
+this process is called back-pressure handling / flow control
+
+What is Back-pressure?
+Back-pressure is a mechanism that allows a system to handle situations
+where the rate of data production exceeds
+
+ */
+
+message Output {
+  int32 value = 1;
+}
+
+message RequestSize {
+  int32 size = 1;
+}
+
+service FlowControlService {
+  rpc GetMessages(stream RequestSize) returns (stream Output);
+}
