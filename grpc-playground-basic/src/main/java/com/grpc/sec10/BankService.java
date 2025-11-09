@@ -1,10 +1,13 @@
-package com.grpc.sec09;
+package com.grpc.sec10;
 
 import com.google.common.util.concurrent.Uninterruptibles;
-import com.grpc.models.sec09.WithdrawRequest;
-import com.grpc.models.sec09.*;
-import com.grpc.sec09.repository.AccountRepository;
-import com.grpc.sec09.validator.RequestValidator;
+import com.grpc.models.sec10.WithdrawRequest;
+import com.grpc.models.sec10.AccountBalance;
+import com.grpc.models.sec10.BalanceCheckRequest;
+import com.grpc.models.sec10.BankServiceGrpc;
+import com.grpc.models.sec10.Money;
+import com.grpc.sec10.repository.AccountRepository;
+import com.grpc.sec10.validator.RequestValidator;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -19,7 +22,6 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
     @Override
     public void getAccountBalance(BalanceCheckRequest request, StreamObserver<AccountBalance> responseObserver){
         RequestValidator.validateAccount(request.getAccountNumber())
-                .map(Status::asRuntimeException)
                 .ifPresentOrElse(
                         responseObserver::onError,
                         () -> setAccountBalance(request, responseObserver)
@@ -42,7 +44,6 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
                .or(() -> RequestValidator.isAmountDivisibleBy10(request.getAmount()))
                .or(() -> RequestValidator.hasSufficientBalance(request.getAmount(), AccountRepository
                        .getBalance(request.getAccountNumber())))
-               .map(Status::asRuntimeException)
                .ifPresentOrElse(
                           responseObserver::onError,
                           () -> sendMoney(request, responseObserver)

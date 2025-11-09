@@ -1,8 +1,8 @@
 syntax ="proto3";
 
-package sec09;
+package sec10;
 
-option java_package ="com.grpc.models.sec09";
+option java_package ="com.grpc.models.sec10";
 option java_multiple_files = true;
 
 message BalanceCheckRequest {
@@ -21,6 +21,17 @@ message AccountBalance {
 
 message Money{
     int32 amount = 1;
+}
+
+enum ValidationCode{
+  INVALID_ACCOUNT = 0;
+  INVALID_AMOUNT = 1;
+  INSUFFICIENT_BALANCE = 2;
+}
+
+message ErrorMessage{
+  ValidationCode validationCode = 1;
+  string message = 2;
 }
 
 service BankService{

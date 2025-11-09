@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Demo {
     public static void main(String[] args) throws IOException {
-        GrpcServer.create(new BankService(), new TransferService())
+        GrpcServer.create(new BankService(), new TransferService(), new BankService())
                 .start()
                 .awit();
     }
